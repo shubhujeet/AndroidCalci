@@ -1,0 +1,110 @@
+package com.example.calculator
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
+import com.google.android.material.button.MaterialButton
+import net.objecthunter.exp4j.ExpressionBuilder
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var resultTv: TextView
+    private lateinit var solutionTv: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        resultTv = findViewById(R.id.result_tv)
+        solutionTv = findViewById(R.id.solution_tv)
+
+//       Initialising all buttons
+        val button0 = findViewById<MaterialButton>(R.id.button_0)
+        val button1 = findViewById<MaterialButton>(R.id.button_1)
+        val button2 = findViewById<MaterialButton>(R.id.button_2)
+        val button3 = findViewById<MaterialButton>(R.id.button_3)
+        val button4 = findViewById<MaterialButton>(R.id.button_4)
+        val button5 = findViewById<MaterialButton>(R.id.button_5)
+        val button6 = findViewById<MaterialButton>(R.id.button_6)
+        val button7 = findViewById<MaterialButton>(R.id.button_7)
+        val button8 = findViewById<MaterialButton>(R.id.button_8)
+        val button9 = findViewById<MaterialButton>(R.id.button_9)
+        val buttonDiv = findViewById<MaterialButton>(R.id.button_divide)
+        val buttonMul = findViewById<MaterialButton>(R.id.button_multiply)
+        val buttonAdd = findViewById<MaterialButton>(R.id.button_addition)
+        val buttonSub = findViewById<MaterialButton>(R.id.button_subtraction)
+        val buttonPoint = findViewById<MaterialButton>(R.id.button_point)
+        val buttonOpenCB = findViewById<MaterialButton>(R.id.button_circular_open_bracket)
+        val buttonCloseCB = findViewById<MaterialButton>(R.id.button_circular_close_bracket)
+
+
+        addList(button0,R.id.button_0)
+        addList(button1,R.id.button_1)
+        addList(button2,R.id.button_2)
+        addList(button3,R.id.button_3)
+        addList(button4,R.id.button_4)
+        addList(button5,R.id.button_5)
+        addList(button6,R.id.button_6)
+        addList(button7,R.id.button_7)
+        addList(button8,R.id.button_8)
+        addList(button9,R.id.button_9)
+        addList(buttonDiv,R.id.button_divide)
+        addList(buttonMul,R.id.button_multiply)
+        addList(buttonAdd,R.id.button_addition)
+        addList(buttonSub,R.id.button_subtraction)
+        addList(buttonPoint,R.id.button_point)
+        addList(buttonOpenCB,R.id.button_circular_open_bracket)
+        addList(buttonCloseCB,R.id.button_circular_close_bracket)
+
+//        All Clearing method
+        var buttonAc: MaterialButton = findViewById(R.id.button_ac)
+        buttonAc.setOnClickListener(){
+            solutionTv.text = ""
+            resultTv.text = "0"
+        }
+
+//        Equal operations
+        var buttonEq: MaterialButton = findViewById(R.id.button_equal)
+        buttonEq.setOnClickListener(){
+            try {
+                val exp = ExpressionBuilder(solutionTv.text.toString()).build()
+                val res = exp.evaluate()
+                val longRes = res.toLong()
+                if (res == longRes.toDouble()){
+                    resultTv.text = longRes.toString()
+                    solutionTv.text = ""
+                }
+                else{
+                    resultTv.text = res.toString()
+                    solutionTv.text = ""
+                }
+            }catch (e:java.lang.Exception) {
+                Log.d("Exception","message:"+e.message)
+            }
+        }
+
+
+//      Clear function
+        var buttonClear: MaterialButton = findViewById(R.id.clear)
+        buttonClear.setOnClickListener{
+            val t:String =  resultTv.text.toString()
+            if (t.isNotEmpty()){
+                resultTv.text = t.substring(0,t.length-1)
+            }
+
+        }
+
+
+    }
+
+    private fun addList( btn:MaterialButton, id: Int) {
+        btn.setOnClickListener {
+            val btnText: String  = btn.text.toString()
+            solutionTv.append(btnText)
+        }
+    }
+
+
+
+}
